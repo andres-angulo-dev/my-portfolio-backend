@@ -3,9 +3,8 @@ var router = express.Router();
 const nodemailer = require('nodemailer');
 const { checkBody } = require('../modules/checkBody');
 
-
 /* GET home page. */
-router.post('/', async (req, res) => {
+router.post('/send_email', async (req, res) => {
   if (!checkBody(req.body, ['lastName', 'email', 'message'])) {
     res.json({ result: false, error: 'Missing or empty fields' })
     return;
@@ -42,7 +41,7 @@ router.post('/', async (req, res) => {
   
     try {
       await transporter.sendMail(mailOptions);
-      return res.status(200).json({ result: true, success: 'Email sent successfully' });
+      return res.status(200).json({ result: true, success: 'Email sent successfully', message: mailOptions });
     } catch (error) {
       return res.status(500).json({ result: false, error: 'Failed to send email' });
     }
