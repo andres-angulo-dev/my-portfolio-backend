@@ -26,9 +26,9 @@ router.post('/send_email', async (req, res) => {
     });
   
     let mailOptions = {
-      from: `"${firstName} ${lastName}" <${process.env.MAILTRAP_FROM}>`,
+      from: `"${firstName} ${lastName}" <${email}>`,
       to: process.env.MAILTRAP_TO, 
-      subject: 'New contact message',
+      subject: `New contact message by ${email}`,
       text: ` 
         LastName: ${lastName} 
         FirstName: ${firstName} 
