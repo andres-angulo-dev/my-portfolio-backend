@@ -25,9 +25,9 @@ router.post('/send_email', async (req, res) => {
         user: process.env.MAILTRAP_USERNAME,
         pass: process.env.MAILTRAP_PASSWORD,
       },
-      // tls: {
-      //   rejectUnauthorized: true, // Ignore invalid or self-signed certificates
-      // },
+      tls: {
+        rejectUnauthorized: false, // Ignore invalid or self-signed certificates
+      },
     });
 
     transporter.verify((error, success) => {
