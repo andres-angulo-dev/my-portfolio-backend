@@ -25,16 +25,16 @@ router.post('/send_email', async (req, res) => {
         user: process.env.MAILTRAP_USERNAME,
         pass: process.env.MAILTRAP_PASSWORD,
       },
-      tls: {
-        rejectUnauthorized: false, // Ignore invalid or self-signed certificates
-      },
+      // tls: {
+      //   rejectUnauthorized: true, // Ignore invalid or self-signed certificates
+      // },
     });
 
     transporter.verify((error, success) => {
       if (error) {
-        console.log("Erreur lors de la vérification SMTP :", error);
+        console.log("Error during SMTP verification :", error);
       } else {
-        console.log("Le serveur SMTP est prêt à envoyer des messages." , success);
+        console.log("The SMTP server is ready to send messages" , success);
       }
     });
     
@@ -57,7 +57,8 @@ router.post('/send_email', async (req, res) => {
         await transporter.sendMail(mailOptions);
         return res.status(200).json({ result: true, success: 'Email sent successfully', message: mailOptions });
     } catch (error) {
-      return res.status(500).json({ result: false, error: 'Failed to send email' });
+      console.error('Error details:', error); // Log full error
+      return res.status(500).json({ result: false, error: 'Failed to send email', details: error.message });
     }
   } else {
     res.json({ result: false, error: 'Email is not valid' });
